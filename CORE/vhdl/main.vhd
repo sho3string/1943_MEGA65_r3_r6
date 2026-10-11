@@ -263,7 +263,7 @@ begin
 
     video_ce_o <= cen6;
     
-    video_flip_o <= not dip_flip;
+    video_flip_o <= dip_flip;
 
     prog_addr <= std_logic_vector(resize(unsigned(dn_addr_i), prog_addr'length) - to_unsigned(C_PROM_START, prog_addr'length));
     prog_data <= dn_data_i;
@@ -309,8 +309,7 @@ begin
     scr1_data <= scr1_q1 & scr1_q0;
     scr2_data <= scr2_q1 & scr2_q0;
     obj_data  <= obj_q1  & obj_q0;
-
-
+    
     -- Synchronous BRAMs return the requested word one main clock later.
     -- Hold *_ok low for the first cycle after an address change.
      -- -------------------------------------------------------------------------
