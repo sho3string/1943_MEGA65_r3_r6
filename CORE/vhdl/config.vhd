@@ -368,22 +368,22 @@ constant OPTM_ITEMS : string :=
    " Game Setup\n"          &
    "\n"                     & 
    " DSW A & B\n"           &
-   " SW1-1 Lives\n"         &
-   " SW1-2 Lives\n"         &
-   " SW1-3 Bonus Lives\n"   &
-   " SW1-4 Bonus Lives\n"   &
-   " SW1-5 Cabinet\n"       &
-   " SW1-6 Coin A\n"        &
-   " SW1-7 Coin A\n"        &
-   " SW1-8 Coin A\n"        &
-   " SW2-1 Screen Stop\n"   &
-   " SW2-2 Difficulty\n"    &
-   " SW2-3 Difficulty\n"    &
-   " SW2-4 Flip Screen\n"   &
-   " SW2-5 Service Mode\n"  &
-   " SW2-6 Coin B\n"        &
-   " SW2-7 Coin B\n"        &
-   " SW2-8 Coin B\n"        &
+   " SW1-1 Service Mode\n"  &
+   " SW1-2 Screen Stop\n"   &
+   " SW1-3 Flip Screen\n"   &
+   " SW1-4 2 Player Game\n" &
+   " SW1-5 Difficulty 1\n"  &
+   " SW1-6 Difficulty 2\n"  &
+   " SW1-7 Difficulty 3\n"  &
+   " SW1-8 Difficulty 4\n"  &
+   " SW2-1 Demo Sounds\n"   &
+   " SW2-2 Contnue\n"       &
+   " SW2-3 Coin B\n"        &
+   " SW2-4 Coin B\n"        &
+   " SW2-5 Coin B\n"        &
+   " SW2-6 Coin A\n"        &
+   " SW2-7 Coin A\n"        &
+   " SW2-8 Coin A\n"        &
    "\n"                     &
    " Back to main menu\n"   &
    "\n"                     &
@@ -487,10 +487,10 @@ type OPTM_GTYPE is array (0 to OPTM_SIZE - 1) of integer range 0 to 2**OPTM_GTC-
                                              OPTM_G_GAP_DSWA1  + OPTM_G_SINGLESEL,                 
                                              OPTM_G_GAP_DSWA2  + OPTM_G_SINGLESEL,            
                                              OPTM_G_GAP_DSWA3  + OPTM_G_SINGLESEL,                    
-                                             OPTM_G_GAP_DSWA4  + OPTM_G_SINGLESEL + OPTM_G_STDSEL,                 
-                                             OPTM_G_GAP_DSWA5  + OPTM_G_SINGLESEL,                
-                                             OPTM_G_GAP_DSWA6  + OPTM_G_SINGLESEL,                  
-                                             OPTM_G_GAP_DSWA7  + OPTM_G_SINGLESEL,              
+                                             OPTM_G_GAP_DSWA4  + OPTM_G_SINGLESEL,            
+                                             OPTM_G_GAP_DSWA5  + OPTM_G_SINGLESEL  + OPTM_G_STDSEL,              
+                                             OPTM_G_GAP_DSWA6  + OPTM_G_SINGLESEL  + OPTM_G_STDSEL,                  
+                                             OPTM_G_GAP_DSWA7  + OPTM_G_SINGLESEL  + OPTM_G_STDSEL,              
                                              OPTM_G_GAP_DSWB0  + OPTM_G_SINGLESEL,                  
                                              OPTM_G_GAP_DSWB1  + OPTM_G_SINGLESEL,                     
                                              OPTM_G_GAP_DSWB2  + OPTM_G_SINGLESEL,                            

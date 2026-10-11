@@ -210,14 +210,14 @@ generate
         );
         */
         mega65_prom #(.AW(8),.DW(4),.SIMFILE(PALETTE_SIMFILE)) u_vprom(
-            .clk    ( clk            ),
-            .prog_clk( prog_clk      ),
-            .cen    ( pxl_cen        ),
-            .data   ( prog_din       ),
-            .rd_addr( colour_addr    ),
-            .wr_addr( prog_addr      ),
-            .we     ( prom_we        ),
-            .q      ( prom_data      )
+            .clk     ( clk            ),
+            .prog_clk( prog_clk       ),
+            .cen     ( pxl_cen        ),
+            .data    ( prog_din       ),
+            .rd_addr ( colour_addr    ),
+            .wr_addr ( prog_addr      ),
+            .we      ( prom_we        ),
+            .q       ( prom_data      )
         );     
         
         

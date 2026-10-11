@@ -24,6 +24,7 @@ module jt1943_scroll #( parameter
 )(
     input                rst,
     input                clk,  // >12 MHz
+    input                prog_clk,
     input                cen6, //  6 MHz
     input         [ 8:0] V128, // V128-V1
     input         [ 8:0] H,    // H256-H1
@@ -172,6 +173,7 @@ jtgng_tile4 #(
     .SIMFILE_MSB    ( SIMFILE_MSB   ))
 u_tile4(
     .clk        (  clk          ),
+    .prog_clk   (  prog_clk     ),
     .cen6       (  cen6         ),
     .HS         (  HS           ),
     .SV         (  SVmap        ),

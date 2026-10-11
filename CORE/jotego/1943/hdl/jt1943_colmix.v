@@ -9,6 +9,7 @@
 module jt1943_colmix(
     input           rst,
     input           clk,    // 24 MHz
+    input           prog_clk,
     input           cen6 /* synthesis direct_enable = 1 */,
     // pixel input from generator modules
     input [3:0]     char_pxl,        // character color code
@@ -105,6 +106,7 @@ always @(posedge clk) if(cen6) {LHBL, LVBL} <= pre_BL;
 // palette ROM
 wire [3:0] pal_red, pal_green, pal_blue;
 
+/*
 jtframe_prom #(.AW(8),.DW(4),.SIMFILE(PALETTE_RED)) u_red(
     .clk    ( clk         ),
     .cen    ( 1'b1        ),
@@ -134,9 +136,47 @@ jtframe_prom #(.AW(8),.DW(4),.SIMFILE(PALETTE_BLUE)) u_blue(
     .we     ( prom_blue_we ),
     .q      ( pal_blue     )
 );
+*/
+
+ mega65_prom #(.AW(8),.DW(4)) u_red(
+    .clk     ( clk         ),
+    .prog_clk( prog_clk    ),
+    .cen     ( 1'b1        ),
+    .data    ( prom_din    ),
+    .rd_addr ( pixel_mux   ),
+    .wr_addr ( prog_addr   ),
+    .we      ( prom_red_we ),
+    .q       ( pal_red     )
+);
+
+ mega65_prom #(.AW(8),.DW(4)) u_green(
+    .clk     ( clk           ),
+    .prog_clk( prog_clk      ),
+    .cen     ( 1'b1          ),
+    .data    ( prom_din      ),
+    .rd_addr ( pixel_mux     ),
+    .wr_addr ( prog_addr     ),
+    .we      ( prom_green_we ),
+    .q       ( pal_green     )
+);
+
+ mega65_prom #(.AW(8),.DW(4)) u_blue(
+    .clk     ( clk          ),
+    .prog_clk( prog_clk     ),
+    .cen     ( 1'b1         ),
+    .data    ( prom_din     ),
+    .rd_addr ( pixel_mux    ),
+    .wr_addr ( prog_addr    ),
+    .we      ( prom_blue_we ),
+    .q       ( pal_blue     )
+);
+
+
 
 // Clock must be faster than 6MHz so selbus is ready for the next
 // 6MHz clock cycle:
+
+/*
 jtframe_prom #(.AW(8),.DW(4),.SIMFILE(PALETTE_PRIOR)) u_selbus(
     .clk    ( clk           ),
     .cen    ( 1'b1          ),
@@ -145,7 +185,20 @@ jtframe_prom #(.AW(8),.DW(4),.SIMFILE(PALETTE_PRIOR)) u_selbus(
     .wr_addr( prog_addr     ),
     .we     ( prom_prior_we ),
     .q      ( selbus        )
+);*/
+
+ mega65_prom #(.AW(8),.DW(4)) u_selbus(
+    .clk     ( clk           ),
+    .prog_clk( prog_clk      ),
+    .cen     ( 1'b1          ),
+    .data    ( prom_din      ),
+    .rd_addr ( seladdr       ),
+    .wr_addr ( prog_addr     ),
+    .we      ( prom_prior_we ),
+    .q       ( selbus        )
 );
+
+
 
 always @(posedge clk) if(cen6) begin
     { red, green, blue } <=

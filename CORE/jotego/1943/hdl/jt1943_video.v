@@ -32,6 +32,7 @@ module jt1943_video #( parameter
 ) (
     input               rst,
     input               clk,
+    input               prog_clk,
     input               pxl_cen,
     input               pxl2_cen,
     input               cen8,
@@ -345,6 +346,7 @@ jt1943_colmix #(
 u_colmix (
     .rst          ( rst           ),
     .clk          ( clk           ),
+    .prog_clk     ( prog_clk      ),
     .cen6         ( pxl_cen       ),
     .preLHBL      ( preLHBL       ),
     .preLVBL      ( preLVBL       ),

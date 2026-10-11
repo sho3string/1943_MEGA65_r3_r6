@@ -5,6 +5,7 @@
 module jt1943_game(
     input         rst,
     input         clk,
+    input         prog_clk,
     input         clk24,
     input         cen8,
     input         cen6,
@@ -89,9 +90,6 @@ wire cpu_cen;
 wire OKOUT, blcnten, bus_req, bus_ack;
 wire [12:0] obj_AB;
 
-wire gfx_prom_we = prom_we && ioctl_addr[25:12] == (MCU_PROM_ADDR[25:12] + 1'b1);
-
-/*
 wire prom_7l_we  = prom_we && ioctl_addr[11:8]== 0;
 wire prom_12l_we = prom_we && ioctl_addr[11:8]== 1;
 wire prom_12a_we = prom_we && ioctl_addr[11:8]== 2;
@@ -105,20 +103,6 @@ wire prom_7c_we  = prom_we && ioctl_addr[11:8]== 9;
 wire prom_8c_we  = prom_we && ioctl_addr[11:8]==10;
 wire prom_6l_we  = prom_we && ioctl_addr[11:8]==11;
 wire mcu_prom_we = prom_we && ioctl_addr[25:12]==MCU_PROM_ADDR[25:12];
-*/
-
-wire prom_7l_we  = gfx_prom_we && ioctl_addr[11:8] ==  0;
-wire prom_12l_we = gfx_prom_we && ioctl_addr[11:8] ==  1;
-wire prom_12a_we = gfx_prom_we && ioctl_addr[11:8] ==  2;
-wire prom_12m_we = gfx_prom_we && ioctl_addr[11:8] ==  3;
-wire prom_13a_we = gfx_prom_we && ioctl_addr[11:8] ==  4;
-wire prom_14a_we = gfx_prom_we && ioctl_addr[11:8] ==  5;
-wire prom_12c_we = gfx_prom_we && ioctl_addr[11:8] ==  6;
-wire prom_7f_we  = gfx_prom_we && ioctl_addr[11:8] ==  7;
-// wire prom_4b_we = gfx_prom_we && ioctl_addr[11:8] == 8; // Video timing. Unused.
-wire prom_7c_we  = gfx_prom_we && ioctl_addr[11:8] ==  9;
-wire prom_8c_we  = gfx_prom_we && ioctl_addr[11:8] == 10;
-wire prom_6l_we  = gfx_prom_we && ioctl_addr[11:8] == 11;
 
 assign cpu_cen = cen6;
 
@@ -254,6 +238,7 @@ jtgng_sound u_sound (
 jt1943_video u_video(
     .rst        ( rst           ),
     .clk        ( clk           ),
+    .prog_clk   ( prog_clk      ),
     .pxl_cen    ( pxl_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .cen8       ( cen8          ),

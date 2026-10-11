@@ -99,7 +99,7 @@ signal cm_dipsw_a        : std_logic_vector(7 downto 0);
 signal cm_dipsw_b        : std_logic_vector(7 downto 0);
 signal cm_dipsw          : std_logic_vector(31 downto 0);
 
--- 1942 controls
+-- 1943 controls
 signal n43_cab_1p        : std_logic_vector(3 downto 0);
 signal n43_coin          : std_logic_vector(3 downto 0);
 signal joystick1         : std_logic_vector(5 downto 0);
@@ -270,55 +270,28 @@ begin
     prom_we <= dn_wr_i when unsigned(dn_addr_i) >= C_PROM_START and unsigned(dn_addr_i) < C_PROM_START + 16#1C00# else '0';
     
     -- Main CPU ROM
-    dn_main_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAIN_START and
-                               unsigned(dn_addr_i) <  C_SND_START else '0';
+    dn_main_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAIN_START and unsigned(dn_addr_i) <  C_SND_START else '0';
     -- Sound CPU ROM
-    dn_snd_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SND_START and
-                              unsigned(dn_addr_i) <  C_CHAR_START else '0';
+    dn_snd_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SND_START and unsigned(dn_addr_i) <  C_CHAR_START else '0';
     -- Character ROM
-    dn_char_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_CHAR_START and
-                                  unsigned(dn_addr_i) <  C_MAP1_START and
-                                  dn_addr_i(0) = '0' else '0';
-    dn_char_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_CHAR_START and
-                                  unsigned(dn_addr_i) <  C_MAP1_START and
-                                  dn_addr_i(0) = '1' else '0';
+    dn_char_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_CHAR_START and unsigned(dn_addr_i) <  C_MAP1_START and dn_addr_i(0) = '0' else '0';
+    dn_char_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_CHAR_START and unsigned(dn_addr_i) <  C_MAP1_START and dn_addr_i(0) = '1' else '0';
     -- Map 1 ROM
-    dn_map1_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP1_START and
-                                  unsigned(dn_addr_i) <  C_MAP2_START and
-                                  dn_addr_i(0) = '0' else '0';
-    dn_map1_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP1_START and
-                                  unsigned(dn_addr_i) <  C_MAP2_START and
-                                  dn_addr_i(0) = '1' else '0';
+    dn_map1_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP1_START and unsigned(dn_addr_i) <  C_MAP2_START and dn_addr_i(0) = '0' else '0';
+    dn_map1_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP1_START and unsigned(dn_addr_i) <  C_MAP2_START and dn_addr_i(0) = '1' else '0';
     -- Map 2 ROM
-    dn_map2_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP2_START and
-                                  unsigned(dn_addr_i) <  C_SCR1_START and
-                                  dn_addr_i(0) = '0' else '0';
-    dn_map2_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP2_START and
-                                  unsigned(dn_addr_i) <  C_SCR1_START and
-                                  dn_addr_i(0) = '1' else '0';
+    dn_map2_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP2_START and unsigned(dn_addr_i) <  C_SCR1_START and dn_addr_i(0) = '0' else '0';
+    dn_map2_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_MAP2_START and unsigned(dn_addr_i) <  C_SCR1_START and dn_addr_i(0) = '1' else '0';
     -- Scroll 1 ROM
-    dn_scr1_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR1_START and
-                                  unsigned(dn_addr_i) <  C_SCR2_START and
-                                  dn_addr_i(0) = '0' else '0';
-    dn_scr1_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR1_START and
-                                  unsigned(dn_addr_i) <  C_SCR2_START and
-                                  dn_addr_i(0) = '1' else '0';
+    dn_scr1_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR1_START and unsigned(dn_addr_i) <  C_SCR2_START and dn_addr_i(0) = '0' else '0';
+    dn_scr1_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR1_START and unsigned(dn_addr_i) <  C_SCR2_START and dn_addr_i(0) = '1' else '0';
     -- Scroll 2 ROM
-    dn_scr2_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR2_START and
-                                  unsigned(dn_addr_i) <  C_OBJ_START and
-                                  dn_addr_i(0) = '0' else '0';
+    dn_scr2_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR2_START and unsigned(dn_addr_i) <  C_OBJ_START and dn_addr_i(0) = '0' else '0';
 
-    dn_scr2_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR2_START and
-                                  unsigned(dn_addr_i) <  C_OBJ_START and
-                                  dn_addr_i(0) = '1' else '0';
+    dn_scr2_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_SCR2_START and unsigned(dn_addr_i) <  C_OBJ_START and dn_addr_i(0) = '1' else '0';
     -- Object ROM
-    dn_obj_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_OBJ_START and
-                                 unsigned(dn_addr_i) <  C_PROM_START and
-                                 dn_addr_i(0) = '0' else '0';
-    dn_obj_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_OBJ_START and
-                                 unsigned(dn_addr_i) <  C_PROM_START and
-                                 dn_addr_i(0) = '1' else '0';
-    
+    dn_obj_lo_we <= dn_wr_i when unsigned(dn_addr_i) >= C_OBJ_START and unsigned(dn_addr_i) <  C_PROM_START and dn_addr_i(0) = '0' else '0';
+    dn_obj_hi_we <= dn_wr_i when unsigned(dn_addr_i) >= C_OBJ_START and unsigned(dn_addr_i) <  C_PROM_START and dn_addr_i(0) = '1' else '0';
        
     dl_main_off <= std_logic_vector(unsigned('0' & dn_addr_i) - C_MAIN_START);
     dl_snd_off  <= std_logic_vector(unsigned('0' & dn_addr_i) - C_SND_START);
@@ -510,6 +483,7 @@ begin
         rst          => reset,
         clk          => clk_main_i,
         clk24        => clk24_i,
+        prog_clk     => dn_clk_i,
         cen8         => cen8,
         cen6         => cen6,
         cen3         => cen3,
