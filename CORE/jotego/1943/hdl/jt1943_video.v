@@ -166,6 +166,7 @@ jtgng_char #(
     .PALETTE_SIMFILE(CHAR_PAL   )
 ) u_char (
     .clk        ( clk           ),
+    .prog_clk   ( prog_clk      ),
     .pxl_cen    ( pxl_cen       ),
     .AB         ( cpu_AB[10:0]  ),
     .V          ( V[7:0]        ),
@@ -200,6 +201,7 @@ jt1943_scroll #(
 u_scroll1 (
     .rst          ( rst           ),
     .clk          ( clk           ),
+    .prog_clk     ( prog_clk      ),
     .cen6         ( pxl_cen       ),
     .LHBL         ( preLHBL       ),
     .V128         ( {1'b0, V[7:0]}),
@@ -237,6 +239,7 @@ generate
         ) u_scroll2 (
             .rst          ( rst           ),
             .clk          ( clk           ),
+            .prog_clk     ( prog_clk      ),
             .cen6         ( pxl_cen       ),
             .LHBL         ( preLHBL       ),
             .V128         ( {1'b0, V[7:0]}),
@@ -293,6 +296,7 @@ jtgng_obj #(
 u_obj(
     .rst            ( rst           ),
     .clk            ( clk           ),
+    .prog_clk       ( prog_clk      ),
     .dma_cen        ( cen8          ),  // 8MHz!!
     .draw_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),

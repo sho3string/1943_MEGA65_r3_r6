@@ -263,7 +263,7 @@ begin
 
     video_ce_o <= cen6;
     
-    video_flip_o <= dip_flip;
+    video_flip_o <= not dip_flip;
 
     prog_addr <= std_logic_vector(resize(unsigned(dn_addr_i), prog_addr'length) - to_unsigned(C_PROM_START, prog_addr'length));
     prog_data <= dn_data_i;

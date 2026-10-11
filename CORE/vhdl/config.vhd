@@ -377,7 +377,7 @@ constant OPTM_ITEMS : string :=
    " SW1-7 Difficulty 3\n"  &
    " SW1-8 Difficulty 4\n"  &
    " SW2-1 Demo Sounds\n"   &
-   " SW2-2 Contnue\n"       &
+   " SW2-2 Continue\n"      &
    " SW2-3 Coin B\n"        &
    " SW2-4 Coin B\n"        &
    " SW2-5 Coin B\n"        &
