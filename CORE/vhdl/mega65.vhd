@@ -279,8 +279,6 @@ signal qnice_dn_addr    : std_logic_vector(24 downto 0);
 signal qnice_dn_data    : std_logic_vector(7 downto 0);
 signal qnice_dn_wr      : std_logic;
 
-signal video_flip       : std_logic;
-
 -- 320x256 @ ~59.87 Hz
 constant C_320_256_60 : video_modes_t := (
    CLK_KHZ     => 6000,       -- 6 MHz
@@ -458,9 +456,7 @@ begin
          dn_addr_i            => qnice_dn_addr,
          dn_data_i            => qnice_dn_data,
          dn_wr_i              => qnice_dn_wr,
-         
-         video_flip_o         => video_flip,
-
+      
          osm_control_i        => main_osm_control_i
          
       ); -- i_main
@@ -528,7 +524,7 @@ begin
           VGA_DE         => video_de,
           rotate_ccw     => '0',
           no_rotate      => '0',
-          flip           => video_flip,
+          flip           => '0',
           FB_VBL         => '0',
           FB_LL          => '0',
           -- output to screen_buffer

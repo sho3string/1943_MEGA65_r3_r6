@@ -75,7 +75,6 @@ entity main is
       dn_data_i               : in  std_logic_vector(7 downto 0);
       dn_wr_i                 : in  std_logic;
       
-      video_flip_o            : out std_logic;
       osm_control_i           : in  std_logic_vector(255 downto 0)
    );
 end entity main;
@@ -93,21 +92,16 @@ signal keyboard_n          : std_logic_vector(79 downto 0);
 -- Reset
 signal reset             : std_logic;
 
-
 -- DIP switches
-signal cm_dipsw_a        : std_logic_vector(7 downto 0);
-signal cm_dipsw_b        : std_logic_vector(7 downto 0);
-signal cm_dipsw          : std_logic_vector(31 downto 0);
+signal n43_dipsw_a        : std_logic_vector(7 downto 0);
+signal n43_dipsw_b        : std_logic_vector(7 downto 0);
+signal n43_dipsw          : std_logic_vector(31 downto 0);
 
 -- 1943 controls
 signal n43_cab_1p        : std_logic_vector(3 downto 0);
 signal n43_coin          : std_logic_vector(3 downto 0);
 signal joystick1         : std_logic_vector(5 downto 0);
 signal joystick2         : std_logic_vector(5 downto 0);
-
--- DIP switches
-signal n43_dipsw         : std_logic_vector(31 downto 0);
-signal dip_flip          : std_logic;
 
 -- JTFRAME clock enables
 signal cen8              : std_logic;
@@ -260,10 +254,7 @@ begin
     -- Core reset
     reset <= reset_soft_i or reset_hard_i;
 
-
     video_ce_o <= cen6;
-    
-    video_flip_o <= dip_flip;
 
     prog_addr <= std_logic_vector(resize(unsigned(dn_addr_i), prog_addr'length) - to_unsigned(C_PROM_START, prog_addr'length));
     prog_data <= dn_data_i;
@@ -343,7 +334,7 @@ begin
     
  
     -- SW1
-    cm_dipsw_a <= not (
+    n43_dipsw_a <= not (
     osm_control_i(C_MENU_SW1_0) &
     osm_control_i(C_MENU_SW1_1) &
     osm_control_i(C_MENU_SW1_2) &
@@ -353,7 +344,7 @@ begin
     osm_control_i(C_MENU_SW1_6) &
     osm_control_i(C_MENU_SW1_7));
     
-    cm_dipsw_b <= not (
+    n43_dipsw_b <= not (
     osm_control_i(C_MENU_SW2_0) &
     osm_control_i(C_MENU_SW2_1) &
     osm_control_i(C_MENU_SW2_2) &
@@ -363,7 +354,8 @@ begin
     osm_control_i(C_MENU_SW2_6) &
     osm_control_i(C_MENU_SW2_7));
     
-    cm_dipsw <=  x"0000" & cm_dipsw_b & cm_dipsw_a;
+    n43_dipsw <=  x"0000" & n43_dipsw_b & n43_dipsw_a;
+   
      -- Start buttons
     n43_cab_1p(0) <= keyboard_n(m65_1); -- 1P Start
     n43_cab_1p(1) <= keyboard_n(m65_2); -- 2P Start
@@ -456,14 +448,14 @@ begin
     joystick1(5) <=  keyboard_n(m65_x) and shoot2_button1_n;
     
     -- Player 2 joystick - active low
-    joystick2(0) <= joy_2_right_n_i and keyboard_n(m65_horz_crsr);
-    joystick2(1) <= joy_2_left_n_i  and keyboard_n(m65_left_crsr);
-    joystick2(2) <= joy_2_down_n_i  and keyboard_n(m65_vert_crsr);
-    joystick2(3) <= joy_2_up_n_i    and keyboard_n(m65_up_crsr);
+    joystick2(0) <= joy_2_right_n_i;
+    joystick2(1) <= joy_2_left_n_i;
+    joystick2(2) <= joy_2_down_n_i;
+    joystick2(3) <= joy_2_up_n_i;
     -- Butto2 1 = Z / joystick fire
-    joystick2(4) <= joy_2_fire_n_i and keyboard_n(m65_z);
+    joystick2(4) <= joy_2_fire_n_i;
     -- Button 2 = X / second joystick button
-    joystick2(5) <=  keyboard_n(m65_x) and shoot2_button2_n;
+    joystick2(5) <=  shoot2_button2_n;
     
     i_jtframe_cen48 : entity work.jtframe_cen48
     port map (
@@ -502,9 +494,9 @@ begin
         coin         => n43_coin,
         joystick1    => '1' & joystick1,
         joystick2    => '1' & joystick2,
-        dipsw        => cm_dipsw,
+        dipsw        => n43_dipsw,
         dip_pause    => keyboard_n(m65_capslock),
-        dip_flip     => dip_flip,
+        dip_flip     => '1',
         service      => keyboard_n(m65_9),
         gfx_en       => (others => '1'),
         debug_bus    => (others => '0'),
@@ -548,8 +540,8 @@ begin
    -- 1943 audio mixer
     i_audio_mixer : entity work.jtframe_mixer
     generic map (
-        W0   => 10,
-        W1   => 10,
+        W0   => 11,
+        W1   => 11,
         W2   => 16,
         W3   => 16,
         WOUT => 16
