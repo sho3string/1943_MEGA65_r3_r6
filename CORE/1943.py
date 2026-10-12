@@ -29,7 +29,10 @@ def build(name, parts):
         raw=parts[0]
         return bytes(v for i in range(0,len(raw),2) for v in raw[i:i+2][::-1])
     if name=='1943_prom.rom': return b''.join(parts)
-    if name=='1943_scr2.rom': return interleave(parts[1],parts[0])
+    if name=='1943_scr2.rom':
+        # Scroll 2 graphics: two 8-bit chips interleaved into 16-bit words.
+        # No gfx_sort is specified for scr2 in JTFRAME mem.yaml.
+        return interleave(parts[1],parts[0])
     if name in ('1943_scr1.rom','1943_obj.rom'):
         # mame2mra sequence [4,0,5,1,6,2,7,3] on 16-bit region
         seq=[4,0,5,1,6,2,7,3]
@@ -45,10 +48,18 @@ def sort_object_hvvvvxx(data):
         result[dst] = value
     return bytes(result)
 
+def sort_map_hvvvx(data):
+    """Rotate h-v-v-v within each 16-bit map word address; x (byte lane) stays fixed."""
+    result = bytearray(len(data))
+    for src, value in enumerate(data):
+        dst = (src & ~0x1e) | ((src & 0x10) >> 3) | ((src & 0x0e) << 1)
+        result[dst] = value
+    return bytes(result)
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('zip',nargs='+',help='MAME 1943 zip(s), e.g. 1943.zip')
-    ap.add_argument('-o','--output',default='1943_roms')
+    ap.add_argument('-o','--output',default='arcade/1943')
     args=ap.parse_args()
     sources={}
     for path in args.zip:
@@ -61,6 +72,8 @@ def main():
         missing=[f for f in inputs if f.lower() not in sources]
         if missing: raise SystemExit(f'{name}: missing {missing}')
         data=build(name,[sources[f.lower()] for f in inputs])
+        if name in ('1943_map1.rom', '1943_map2.rom'):
+            data = sort_map_hvvvx(data)
         if name == '1943_obj.rom':
             data = sort_object_hvvvvxx(data)
         expected={'1943_main.rom':163840,'1943_sound.rom':32768,'1943_char.rom':32768,'1943_map1.rom':32768,'1943_map2.rom':32768,'1943_scr1.rom':262144,'1943_scr2.rom':65536,'1943_obj.rom':262144,'1943_prom.rom':7168}[name]
